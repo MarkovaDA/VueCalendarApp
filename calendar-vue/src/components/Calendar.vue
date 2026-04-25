@@ -88,6 +88,7 @@ const nextMonth = () => {
   </section>
 </template>
 
+<!-- залить код календарика -->
 <style scoped>
 .calendar {
   width: 100%;
