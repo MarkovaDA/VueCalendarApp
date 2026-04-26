@@ -1,10 +1,10 @@
 <script setup>
-import TheWelcome from './components/TheWelcome.vue'
+import Container from './components/Container.vue'
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <Container />
   </main>
 </template>
 
