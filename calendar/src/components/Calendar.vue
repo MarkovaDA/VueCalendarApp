@@ -20,13 +20,21 @@ const days = computed(() => {
   const firstDayOfMonth = new Date(currentYear.value, currentMonth.value, 1)
   const offset = (firstDayOfMonth.getDay() + 6) % 7
   const daysInMonth = new Date(currentYear.value, currentMonth.value + 1, 0).getDate()
+  const daysInPreviousMonth = new Date(currentYear.value, currentMonth.value, 0).getDate()
 
   return Array.from({ length: 42 }, (_, index) => {
-    const dateNumber = index - offset + 1
-    const inCurrentMonth = dateNumber > 0 && dateNumber <= daysInMonth
+    const rawDateNumber = index - offset + 1
+    const inCurrentMonth = rawDateNumber > 0 && rawDateNumber <= daysInMonth
+    const dateNumber =
+      rawDateNumber <= 0
+        ? daysInPreviousMonth + rawDateNumber
+        : rawDateNumber > daysInMonth
+          ? rawDateNumber - daysInMonth
+          : rawDateNumber
+    
     const isToday =
       inCurrentMonth &&
-      dateNumber === today.getDate() &&
+      rawDateNumber === today.getDate() &&
       currentMonth.value === today.getMonth() &&
       currentYear.value === today.getFullYear()
 
@@ -36,13 +44,13 @@ const days = computed(() => {
       isToday,
     }
   })
-})
+}) 
 
 const previousMonth = () => {
   if (currentMonth.value === 0) {
-    currentMonth.value = 11
-    currentYear.value -= 1
-    return
+    currentMonth.value = 11;
+    currentYear.value -= 1;
+    return;
   }
 
   currentMonth.value -= 1
@@ -50,9 +58,9 @@ const previousMonth = () => {
 
 const nextMonth = () => {
   if (currentMonth.value === 11) {
-    currentMonth.value = 0
-    currentYear.value += 1
-    return
+    currentMonth.value = 0;
+    currentYear.value += 1;
+    return;
   }
 
   currentMonth.value += 1
@@ -188,6 +196,10 @@ const nextMonth = () => {
   transition:
     background-color 0.2s ease,
     color 0.2s ease;
+}
+
+.days span:not(.muted) {
+  background: lavender;
 }
 
 .days span:hover {
